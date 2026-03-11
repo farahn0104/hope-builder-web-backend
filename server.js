@@ -32,25 +32,41 @@ const app = express();
 // Connect to Database
 connectDB();
 
-// CORS Policy
+// CORS Policy - Updated for better production compatibility
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()) 
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()).filter(o => o !== '')
   : ['http://localhost:8080', 'http://localhost:3000', 'http://localhost:5173'];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps, curl, or same-origin)
+    if (!origin) return callback(null, true);
+    
+    // Normalize origin by removing trailing slash for comparison
+    const normalizedOrigin = origin.replace(/\/$/, "");
+    
+    if (allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
-      console.warn(`Blocked by CORS: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
+      console.error(`CORS Blocked: Origin "${origin}" is not in allowed list:`, allowedOrigins);
+      callback(new Error('Cross-Origin Request Blocked by NGO Backend Policy'), false);
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  exposedHeaders: ['Set-Cookie']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+  optionsSuccessStatus: 200 // Important for some browser compatibility
 }));
+
+// Debug route to verify CORS settings (remove in production if sensitive)
+app.get('/api/debug-cors', (req, res) => {
+  res.json({
+    status: 'active',
+    allowedOriginsCount: allowedOrigins.length,
+    nodeEnv: process.env.NODE_ENV,
+    isLocal: !process.env.ALLOWED_ORIGINS
+  });
+});
 
 // Security Middleware (Helmet should be after CORS to avoid header conflicts)
 app.use(helmet());
