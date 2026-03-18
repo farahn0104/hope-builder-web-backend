@@ -11,7 +11,7 @@ const homepageSchema = new mongoose.Schema({
     },
     heroImage: {
         type: String, // URL/Path
-        required: [true, 'Please add a hero image']
+        default: '/assets/hero-education.jpg'
     },
     ctaText: {
         type: String,

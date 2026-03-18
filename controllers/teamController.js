@@ -19,8 +19,8 @@ const getTeamMembers = async (req, res, next) => {
 // @access  Private/Admin
 const createTeamMember = async (req, res, next) => {
     try {
-        const { name, role, description } = req.body;
-        const memberData = { name, role, description };
+        const { name, designation, bio, committee } = req.body;
+        const memberData = { name, designation, bio, committee };
 
         if (req.file) {
             memberData.photo = `/uploads/${req.file.filename}`;

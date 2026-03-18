@@ -14,7 +14,7 @@ const contactRoutes = require('./routes/contactRoutes');
 // const volunteerRoutes = require('./routes/volunteerRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const donationRoutes = require('./routes/donationRoutes');
-// const blogRoutes = require('./routes/blogRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 const impactRoutes = require('./routes/impactRoutes');
@@ -25,6 +25,7 @@ const programRoutes = require('./routes/programRoutes');
 const aboutRoutes = require('./routes/aboutRoutes');
 const homepageRoutes = require('./routes/homepageRoutes');
 const teamRoutes = require('./routes/teamRoutes');
+const happeningRoutes = require('./routes/happeningRoutes');
 const path = require('path');
 
 const app = express();
@@ -105,6 +106,8 @@ app.use('/api/programs', programRoutes);
 app.use('/api/homepage', homepageRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/teammembers', teamRoutes);
+app.use('/api/happenings', happeningRoutes);
+app.use('/api/blogs', blogRoutes);
 
 // Root route
 app.get('/', (req, res) => {

@@ -5,17 +5,30 @@ const teamMemberSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a name']
     },
-    role: {
+    designation: {
         type: String,
-        required: [true, 'Please add a role']
+        required: [true, 'Please add a designation']
     },
     photo: {
-        type: String, // URL/Path
+        type: String,
         required: [true, 'Please add a photo']
     },
-    description: {
+    bio: {
         type: String,
-        required: [true, 'Please add a description']
+        required: [true, 'Please add a bio']
+    },
+    committee: {
+        type: String,
+        required: [true, 'Please add a committee'],
+        enum: [
+            'Governing Board',
+            'Founder Team',
+            'Advisory Committee',
+            'Finance and Audit Committee',
+            'Fundraising and Partnership Committee',
+            'Ethics & Compliance Committee',
+            'Program Management Team'
+        ]
     }
 }, {
     timestamps: true

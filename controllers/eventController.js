@@ -17,20 +17,24 @@ const getEvents = async (req, res, next) => {
 // @access  Private/Admin
 const createEvent = async (req, res, next) => {
     try {
-        const { title, description, location, date, image } = req.body;
+        const { title, description, location, date, image, type } = req.body;
 
         if (!title || !description || !location || !date) {
             res.status(400);
             throw new Error('Please fill all required fields');
         }
 
-        const event = await Event.create({
+        const eventData = {
             title,
             description,
             location,
             date,
             image,
-        });
+        };
+
+        if (type) eventData.type = type;
+
+        const event = await Event.create(eventData);
 
         res.status(201).json({ success: true, data: event });
     } catch (error) {

@@ -18,6 +18,11 @@ const eventSchema = mongoose.Schema(
             type: Date,
             required: [true, 'Please add a date'],
         },
+        type: {
+            type: String,
+            enum: ['featured', 'upcoming'],
+            default: 'upcoming'
+        },
         image: {
             type: String,
         },
